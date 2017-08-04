@@ -1,0 +1,45 @@
+# assuming ubuntu 16
+apt-get update 
+apt-get install python
+apt-get install python-pip
+git clone https://github.com/EmpireProject/Empire.git
+./setup/install.sh
+
+apt-get install nginx
+add-apt-repository ppa:certbot/certbot
+apt-get update
+apt-get install certbot
+
+nano /etc/nginx/sites-enabled/default
+#add to nginx default
+location ~ /.well-known {
+                allow all;
+        }
+
+/etc/init.d/nginx restart
+certbot certonly --webroot --webroot-path=/var/www/html -d <the new domain>
+cd /etc/letsencrypt/live/<tab>
+cat cert.pem privkey.pem > em.pem
+
+nano /etc/tmux.conf
+
+#paste
+set -g prefix ^a
+set -g terminal-overrides 'xterm*:smcup@:rmcup@'
+unbind %
+bind \ split-window -h
+bind - split-window -v
+bind N break-pane
+# Set status bar
+set -g status-bg black
+set -g status-fg white
+# Highlight active window
+set-window-option -g window-status-current-bg blue
+
+# Set window notifications
+setw -g monitor-activity on
+set -g visual-activity on
+
+# Automatically set window title
+setw -g automatic-rename
+
